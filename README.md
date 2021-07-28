@@ -6,7 +6,7 @@ You can modify things like: items name, items weight, images, music etc at the i
 
 img: 
 
-![demo](https://prnt.sc/1h77chn)
+![demo (link: https://prnt.sc/1h77chn)](https://prnt.sc/1h77chn)
 
 drag the image you want to the "items img" slot in the inspector, new item class will generate below with basic variables and default values
 

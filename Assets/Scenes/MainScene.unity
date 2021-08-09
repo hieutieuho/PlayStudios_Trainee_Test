@@ -5687,49 +5687,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c52290c1fd0d0134690f93eb44f5544c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemsImg: {fileID: 0}
-  ListItems:
-  - id: apple_seed
-    name: Apple seed
-    weight: 0
-    is_jackpot: 0
-    message: Unlucky !!! You picked the Apple seed !!!
-  - id: apple_sprout
-    name: Apple sprout
-    weight: 10
-    is_jackpot: 0
-    message: You picked the Apple sprout !!!
-  - id: apple_tree
-    name: Apple tree
-    weight: 50
-    is_jackpot: 0
-    message: You picked the Apple tree !!! Not bad !!!
-  - id: apple_flower
-    name: Apple flower
-    weight: 100
-    is_jackpot: 0
-    message: Nice !!! You picked the Apple flower !!!
-  - id: apple_bud
-    name: Apple bud
-    weight: 200
-    is_jackpot: 0
-    message: Wow !!! You picked the Apple bud !!!
-  - id: unripe_apple
-    name: Unripe apple
-    weight: 500
-    is_jackpot: 0
-    message: Amazing !!! You picked the Apple unripe Apple !!!
-  - id: ripe_apple
-    name: Ripe apple
-    weight: 1000000
-    is_jackpot: 1
-    message: INCREDIBLE !!! You picked the Jackpot Apple !!!
-  - id: rotten_apple
-    name: Rotten apple
-    weight: -100
-    is_jackpot: 0
-    message: Too Bad !!! You picked the rotten Apple !!!
+  ListItems: []
   ChooseCount: 2
+  NoS: 10
   moneyIcon: {fileID: 21300000, guid: 81f0af2070cf4834e9e32079a9efd6d2, type: 3}
   Popup: {fileID: 1449643138}
   guideTxt: {fileID: 247345665}
@@ -5744,29 +5704,32 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 6bc3e57cb6bd5bf4b84106a99095cca4, type: 3}
     itemWeight: 0
   - sound: 2
-    audioClip: {fileID: 8300000, guid: bd613799d5ba5474fa4cd770653e3a62, type: 3}
-    itemWeight: 100
-  - sound: 2
-    audioClip: {fileID: 8300000, guid: f170cc508d973044faabed3cff8be670, type: 3}
-    itemWeight: 10
-  - sound: 2
-    audioClip: {fileID: 8300000, guid: 1b4deabe8741f1f40a29b5a425c81cee, type: 3}
-    itemWeight: 1000000
-  - sound: 2
     audioClip: {fileID: 8300000, guid: 7556ab9f683a4744c9aa71930ee2574b, type: 3}
     itemWeight: -100
   - sound: 2
-    audioClip: {fileID: 8300000, guid: d42524db1f00f6148ae20b22bdabe89e, type: 3}
+    audioClip: {fileID: 8300000, guid: f170cc508d973044faabed3cff8be670, type: 3}
     itemWeight: 0
+  - sound: 2
+    audioClip: {fileID: 8300000, guid: f170cc508d973044faabed3cff8be670, type: 3}
+    itemWeight: 10
   - sound: 2
     audioClip: {fileID: 8300000, guid: f170cc508d973044faabed3cff8be670, type: 3}
     itemWeight: 50
   - sound: 2
     audioClip: {fileID: 8300000, guid: bd613799d5ba5474fa4cd770653e3a62, type: 3}
+    itemWeight: 100
+  - sound: 2
+    audioClip: {fileID: 8300000, guid: bd613799d5ba5474fa4cd770653e3a62, type: 3}
     itemWeight: 200
   - sound: 2
     audioClip: {fileID: 8300000, guid: bd613799d5ba5474fa4cd770653e3a62, type: 3}
+    itemWeight: 300
+  - sound: 2
+    audioClip: {fileID: 8300000, guid: bd613799d5ba5474fa4cd770653e3a62, type: 3}
     itemWeight: 500
+  - sound: 2
+    audioClip: {fileID: 8300000, guid: 1b4deabe8741f1f40a29b5a425c81cee, type: 3}
+    itemWeight: 1000000
   status: 0
 --- !u!4 &506942754
 Transform:

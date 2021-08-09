@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,8 @@ public class ItemPrefab : MonoBehaviour
     [SerializeField]
     Text Item_weight;
     public bool is_flip {get; private set;} = false;
-    M_Item m_Item;
+    M_Item m_Item;    
+    int[] Probability = {1,9,30,60};
     /// <summary>
     /// Initialize the items for the prefab
     /// </summary>
@@ -26,12 +28,30 @@ public class ItemPrefab : MonoBehaviour
     /// When player press on the items
     /// </summary>
     public void openItem(){
+        #region random items
+
+        float randnum = UnityEngine.Random.Range(0f,100f);
+        Debug.Log("Randnum: " + randnum);
+        foreach(int prob in Probability){
+            if(randnum <= prob){
+                List<M_Item> listItemByProb = GameManager.instance.ListItems.FindAll(x => x.Probability == prob).ToList();
+                init(listItemByProb[UnityEngine.Random.Range(0,listItemByProb.Count)]);
+                break;
+            }else{
+                randnum -= prob;
+            }
+        }
+
+        #endregion
+        
+        #region open items
         if(GameManager.instance.status == GameStatus.Start){
             this.GetComponent<Animation>().Play("flip_Items");
             is_flip = true;
             ItemController.instance.checkOpenCount();
             SoundManager.PlaySound(Sound.Button);
         }
+        #endregion
     }
     /// <summary>
     /// Trigger when the animation flip_items finish

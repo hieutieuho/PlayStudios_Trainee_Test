@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 /// <summary>
 /// This script is the quick tool to add 4 shadow component in 4 directions to look like an outline
+/// Why I don't use outline ? Because the out line cost twice the performance to 4 shadows !!! and the shadows look much better too!!!
 /// </summary>
 
 

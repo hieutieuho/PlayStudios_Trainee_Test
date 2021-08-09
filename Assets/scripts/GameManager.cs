@@ -10,27 +10,33 @@ public enum GameStatus
     Finish
 }
 
-[ExecuteInEditMode]
 public class GameManager : MonoBehaviour
 {
-    [Header("Drag the image of item to auto generate item properties")]
-    public Sprite itemsImg;
-    [Header("List items for the game")]
+    // [Header("Drag the image of item to auto generate item properties")]
+    // public Sprite itemsImg;
+
+    //[Header("List items for the game")]
     public List<M_Item> ListItems = new List<M_Item>();
+
     [Header("Number of how many items player can choose")]
     public int ChooseCount = 2;
+    [Header("Number of how many items slot will show on scene")]
+    public int NoS = 10; // Number of Slots
+
     [Header("Choose the image for the money")]
     public Sprite moneyIcon;
+
     [Space(10)]
     [Header("Reference components")]
     [SerializeField]
     GameObject Popup;
     [SerializeField]
     Text guideTxt;
+
     [Space(10)]
     [Header("Sound Manager")]
     public List<ListAudioClip> listAudioClips;
-    public AudioSource sound {get; private set;}
+    public AudioSource sound { get; private set; }
     [HideInInspector]
     public GameStatus status = GameStatus.Start;
     public static GameManager instance;
@@ -43,63 +49,51 @@ public class GameManager : MonoBehaviour
         setGuideTxt();
         sound = FindObjectOfType<AudioSource>();
         SoundManager.PlayMusic();
+        getListItem();
     }
-    public void setGuideTxt(){
-        if(status == GameStatus.Start){
+    public void getListItem()
+    {
+        ListItems = JsonManager.getListItem();
+        if (ListItems == null)
+        {
+            ListItems = getListItemFromImages();
+            ListItemsJson listJson = new ListItemsJson();
+            listJson.list = ListItems;
+            JsonManager.saveJson(listJson, "Items");
+        }
+    }
+    public void setGuideTxt()
+    {
+        if (status == GameStatus.Start)
+        {
             guideTxt.text = $"Pick {ChooseCount} slot to test your luck !!!";
-        }else{
+        }
+        else
+        {
             guideTxt.text = $"Good luck next time, Try Again ======>>>";
         }
     }
 
-#if UNITY_EDITOR
-    void OnValidate()
+    List<M_Item> getListItemFromImages()
     {
-        bool check = false;
-        foreach (var item in ListItems)
+        List<M_Item> list = new List<M_Item>();
+        List<Sprite> AllItemslist = Resources.LoadAll<Sprite>($"Items").ToList();
+        for (int i = 0; i < AllItemslist.Count; i++)
         {
-            if (Resources.Load<Sprite>($"Items/{item.id}") == null)
+            M_Item item = new M_Item();
+            item.id = AllItemslist[i].name;
+            item.name = AllItemslist[i].name.First().ToString().ToUpper() + AllItemslist[i].name.Substring(1);
+            if (AllItemslist[i].name.Contains("_"))
             {
-                Debug.LogError($"This item {item.id} is missing !!!");
-                check = true;
-                break;
+                item.name = AllItemslist[i].name.Replace("_", " ");
             }
+            item.weight = i + 1;
+            item.message = $"You picked the {item.name} !!!";
+            item.Probability = item.weight;
+            list.Add(item);
         }
-        if (!check)
-        {
-            StartCoroutine(ClearConsole());
-        }
-        if (itemsImg != null)
-        {
-            if (!ListItems.Any(x => x.id == itemsImg.name))
-            {
-                M_Item item = new M_Item();
-                item.id = itemsImg.name;
-                item.name = itemsImg.name.First().ToString().ToUpper() + itemsImg.name.Substring(1);
-                if (item.name.Contains("_"))
-                    item.name = item.name.Replace("_", " ");
-                item.weight = ListItems.Count + 1;
-                item.message = $"You picked the {item.name} !!!";
-                ListItems.Add(item);
-            }
-            else
-            {
-                Debug.LogError("This item already exist !!!");
-            }
-        }
-        itemsImg = null;
+        return list;
     }
-    IEnumerator ClearConsole()
-    {
-        // wait until console visible
-        while (!Debug.developerConsoleVisible)
-        {
-            yield return null;
-        }
-        yield return null; // this is required to wait for an additional frame, without this clearing doesn't work (at least for me)
-        Debug.ClearDeveloperConsole();
-    }
-#endif
     public void setActivePopup(bool set)
     {
         Popup.SetActive(set);

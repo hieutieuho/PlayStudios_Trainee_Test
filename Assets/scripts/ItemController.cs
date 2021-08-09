@@ -15,6 +15,7 @@ public class ItemController : MonoBehaviour
     int open_count = 0;
     int flip_back_count = 0;
     public static ItemController instance;
+
     void Awake()
     {
         instance = this;
@@ -25,13 +26,14 @@ public class ItemController : MonoBehaviour
         loadItems();
     }
     
+    
     /// <summary>
     /// Load items data 
     /// </summary>
     void loadItems()
     {
         AddItemGameObject();
-        setItemData();
+        //setItemData();
     }
     /// <summary>
     /// wait for amount of time before doing something
@@ -45,30 +47,31 @@ public class ItemController : MonoBehaviour
     }
     void AddItemGameObject()
     {
-        for (int i = 0; i < GameManager.instance.ListItems.Count; i++)
+        for (int i = 0; i < GameManager.instance.NoS; i++)
         {
             GameObject obj = Instantiate(ItemPrefab, gridLayout.transform);
             StartCoroutine(DelayAction(i*0.1f,() => obj.GetComponent<Animation>().Play("item_show_up")));            
         }
     }
-    void setItemData()
-    {
-        List<M_Item> items = GameManager.instance.ListItems;
-        List<M_Item> listRand = new List<M_Item>();
-        for (int i = 0; i < items.Count; i++)
-        {
-            M_Item randItem = items[UnityEngine.Random.Range(0, items.Count)];
-            while (listRand.Any(x => x.id == randItem.id))
-            {
-                randItem = items[UnityEngine.Random.Range(0, items.Count)];
-            }
-            listRand.Add(randItem);
-        }
-        for (int i = 0; i < listRand.Count; i++)
-        {
-            gridLayout.transform.GetChild(i).GetComponent<ItemPrefab>().init(listRand[i]);
-        }
-    }
+    // void setItemData()
+    // {
+    //     List<M_Item> items = GameManager.instance.ListItems;
+    //     List<M_Item> listRand = new List<M_Item>();
+    //     for (int i = 0; i < items.Count; i++)
+    //     {
+    //         M_Item randItem = items[UnityEngine.Random.Range(0, items.Count)];
+    //         while (listRand.Any(x => x.id == randItem.id))
+    //         {
+    //             randItem = items[UnityEngine.Random.Range(0, items.Count)];
+    //         }
+    //         listRand.Add(randItem);
+    //     }
+    //     for (int i = 0; i < listRand.Count; i++)
+    //     {
+    //         gridLayout.transform.GetChild(i).GetComponent<ItemPrefab>().init(listRand[i]);
+    //     }
+    // }
+
     /// <summary>
     /// Check how many items player opened
     /// </summary>
@@ -119,7 +122,7 @@ public class ItemController : MonoBehaviour
         flip_back_count = 0;
         open_count = 0;
         GameManager.instance.status = GameStatus.Start;
-        setItemData();
+        //setItemData();
         SoundManager.PlayMusic();
     }
 }

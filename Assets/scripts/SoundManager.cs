@@ -29,6 +29,7 @@ public static class SoundManager
         GameManager.instance.sound.PlayOneShot(GetAudioClip(Sound.items, weight));
     }
     public static void PlayMusic(){
+        StopSound();
         GameManager.instance.sound.clip = (GetAudioClip(Sound.Music));
         GameManager.instance.sound.Play();
     }

@@ -1,0 +1,76 @@
+{
+    "list": [
+        {
+            "id": "apple_bud",
+            "name": "apple bud",
+            "weight": 100,
+            "is_jackpot": false,
+            "message": "You picked the apple bud !!!",
+            "Probability": 30.0
+        },
+        {
+            "id": "apple_flower",
+            "name": "apple flower",
+            "weight": 200,
+            "is_jackpot": false,
+            "message": "You picked the apple flower !!!",
+            "Probability": 30.0
+        },
+        {
+            "id": "apple_seed",
+            "name": "apple seed",
+            "weight": 0,
+            "is_jackpot": false,
+            "message": "You picked the apple seed !!!",
+            "Probability": 9.0
+        },
+        {
+            "id": "apple_sprout",
+            "name": "apple sprout",
+            "weight": 10,
+            "is_jackpot": false,
+            "message": "You picked the apple sprout !!!",
+            "Probability": 60.0
+        },
+        {
+            "id": "apple_tree",
+            "name": "apple tree",
+            "weight": 50,
+            "is_jackpot": false,
+            "message": "You picked the apple tree !!!",
+            "Probability": 60.0
+        },
+        {
+            "id": "half_ripe_apple",
+            "name": "half ripe apple",
+            "weight": 500,
+            "is_jackpot": false,
+            "message": "You picked the half ripe apple !!!",
+            "Probability": 10.0
+        },
+        {
+            "id": "ripe_apple",
+            "name": "ripe apple",
+            "weight": 1000000,
+            "is_jackpot": true,
+            "message": "You picked the ripe apple !!!",
+            "Probability": 1.0
+        },
+        {
+            "id": "rotten_apple",
+            "name": "rotten apple",
+            "weight": -100,
+            "is_jackpot": false,
+            "message": "You picked the rotten apple !!!",
+            "Probability": 1.0
+        },
+        {
+            "id": "unripe_apple",
+            "name": "unripe apple",
+            "weight": 300,
+            "is_jackpot": false,
+            "message": "You picked the unripe apple !!!",
+            "Probability": 10.0
+        }
+    ]
+}

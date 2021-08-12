@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     // [Header("Drag the image of item to auto generate item properties")]
     // public Sprite itemsImg;
 
-    //[Header("List items for the game")]
+    [Header("List items for the game")]
     public List<M_Item> ListItems = new List<M_Item>();
 
     [Header("Number of how many items player can choose")]
@@ -39,7 +39,9 @@ public class GameManager : MonoBehaviour
     public AudioSource sound { get; private set; }
     [HideInInspector]
     public GameStatus status = GameStatus.Start;
+    public List<float> listProbability {get; private set;}
     public static GameManager instance;
+
     void Awake()
     {
         instance = this;
@@ -53,6 +55,7 @@ public class GameManager : MonoBehaviour
     }
     public void getListItem()
     {
+        //get list items
         ListItems = JsonManager.getListItem();
         if (ListItems == null)
         {
@@ -61,6 +64,9 @@ public class GameManager : MonoBehaviour
             listJson.list = ListItems;
             JsonManager.saveJson(listJson, "Items");
         }
+        // get list probabilities
+        listProbability = new List<float>();
+        listProbability = ProbabilityManager.getListProbability(ListItems);
     }
     public void setGuideTxt()
     {

@@ -30,17 +30,8 @@ public class ItemPrefab : MonoBehaviour
     public void openItem(){
         #region random items
 
-        float randnum = UnityEngine.Random.Range(0f,100f);
-        Debug.Log("Randnum: " + randnum);
-        foreach(int prob in Probability){
-            if(randnum <= prob){
-                List<M_Item> listItemByProb = GameManager.instance.ListItems.FindAll(x => x.Probability == prob).ToList();
-                init(listItemByProb[UnityEngine.Random.Range(0,listItemByProb.Count)]);
-                break;
-            }else{
-                randnum -= prob;
-            }
-        }
+        int index = ProbabilityManager.getIndexByProbability(GameManager.instance.listProbability);
+        init(GameManager.instance.ListItems[index]);
 
         #endregion
         

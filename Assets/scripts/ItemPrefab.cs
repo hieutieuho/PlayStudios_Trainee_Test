@@ -4,13 +4,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+public enum ItemState{
+    IDLE,
+    item_show_up,
+    item_open,
+    item_flip_back
+}
 public class ItemPrefab : MonoBehaviour
 {
     [SerializeField]
     Image Item_Image, Coin_Image;
     [SerializeField]
     Text Item_weight;
+    [SerializeField]
+    Animator animator;
+    ItemState currentState;
     public bool is_flip {get; private set;} = false;
     M_Item m_Item;    
     int[] Probability = {1,9,30,60};
@@ -24,23 +32,33 @@ public class ItemPrefab : MonoBehaviour
         Item_weight.text = (m_Item.weight != 0) ? String.Format("{0:###,#}", m_Item.weight) : "0";
         Coin_Image.sprite = GameManager.instance.moneyIcon;
     }
+    public void changeAnimatorState(ItemState newstate){
+        if(newstate == currentState) return;
+
+        animator.Play(newstate.ToString());
+
+        currentState = newstate;
+    }
+    public void playShowUpAnimation(){
+        changeAnimatorState(ItemState.item_show_up);
+    }
     /// <summary>
     /// When player press on the items
     /// </summary>
     public void openItem(){
         #region random items
 
-        int index = ProbabilityManager.getIndexByProbability(GameManager.instance.listProbability);
+        int index = ProbabilityManager.instance.getIndexByProbability(GameManager.instance.listProbability);
         init(GameManager.instance.ListItems[index]);
 
         #endregion
         
         #region open items
         if(GameManager.instance.status == GameStatus.Start){
-            this.GetComponent<Animation>().Play("flip_Items");
+            changeAnimatorState(ItemState.item_open);
             is_flip = true;
             ItemController.instance.checkOpenCount();
-            SoundManager.PlaySound(Sound.Button);
+            GameManager.instance.soundManager.PlaySound(Sound.Button);
         }
         #endregion
     }
@@ -57,7 +75,7 @@ public class ItemPrefab : MonoBehaviour
     public void flipBackItem(){
         if(is_flip){
             is_flip = false;
-            this.GetComponent<Animation>().Play("flip_back");
+            changeAnimatorState(ItemState.item_flip_back);
         }
     }
     /// <summary>
@@ -66,4 +84,5 @@ public class ItemPrefab : MonoBehaviour
     public void onEndFlipBackAnimation(){
         ItemController.instance.onEndFlipBackAnimationCheck();
     }
+    
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Lean.Localization;
 
 public class PopUpControl : MonoBehaviour
 {
@@ -27,10 +28,11 @@ public class PopUpControl : MonoBehaviour
             particle.Play();
         }
         itemImg.sprite = Resources.Load<Sprite>($"Items/{m_Item.id}");
-        itemMessage.text = m_Item.message;
+        LeanLocalization.SetToken("itemName", m_Item.name);
+        itemMessage.text = LeanLocalization.GetTranslationText("Result");
         coinImage.sprite = GameManager.instance.moneyIcon;
         increasingNumberEffect(0, m_Item.weight, 1);
-        SoundManager.PlaySoundItem(m_Item.weight);
+        GameManager.instance.soundManager.PlaySoundItem(m_Item.weight);
     }
     /// <summary>
     /// Increase the text number in an amount of time

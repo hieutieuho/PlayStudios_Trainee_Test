@@ -12,6 +12,8 @@ public class ItemController : MonoBehaviour
     GridLayoutGroup gridLayout;
     [SerializeField]
     GameObject ItemPrefab, tryAgainBtn;
+    [SerializeField]
+    Text soundTxt;
     int open_count = 0;
     int flip_back_count = 0;
     public static ItemController instance;
@@ -25,8 +27,22 @@ public class ItemController : MonoBehaviour
     {
         loadItems();
     }
-    
-    
+    private void OnEnable()
+    {
+        soundTxt.text = GameManager.instance.getSoundTxt();
+        for (int i = 0; i < gridLayout.transform.childCount; i++)
+        {
+            int c = i;
+            StartCoroutine(DelayAction(i * 0.1f, () =>
+            {
+                gridLayout.transform.GetChild(c).GetComponent<ItemPrefab>().playShowUpAnimation();
+            }));
+        }
+    }
+    private void OnDisable()
+    {
+    }
+
     /// <summary>
     /// Load items data 
     /// </summary>
@@ -41,7 +57,8 @@ public class ItemController : MonoBehaviour
     /// <param name="time"></param>
     /// <param name="callback"></param>
     /// <returns></returns>
-    IEnumerator DelayAction(float time, Action callback){
+    IEnumerator DelayAction(float time, Action callback)
+    {
         yield return new WaitForSecondsRealtime(time);
         callback?.Invoke();
     }
@@ -50,7 +67,7 @@ public class ItemController : MonoBehaviour
         for (int i = 0; i < GameManager.instance.NoS; i++)
         {
             GameObject obj = Instantiate(ItemPrefab, gridLayout.transform);
-            StartCoroutine(DelayAction(i*0.1f,() => obj.GetComponent<Animation>().Play("item_show_up")));            
+            StartCoroutine(DelayAction(i * 0.1f, () => obj.GetComponent<ItemPrefab>().playShowUpAnimation()));
         }
     }
     // void setItemData()
@@ -85,12 +102,15 @@ public class ItemController : MonoBehaviour
             GameManager.instance.setGuideTxt();
         }
     }
-    public void checkCountForSound(){
+    public void checkCountForSound()
+    {
         if (open_count == GameManager.instance.ChooseCount)
         {
-            SoundManager.PlaySound(Sound.endGame);
-        }else{
-            SoundManager.PlayMusic();
+            GameManager.instance.soundManager.PlaySound(Sound.endGame);
+        }
+        else
+        {
+            GameManager.instance.soundManager.PlayMusic();
         }
     }
     /// <summary>
@@ -114,6 +134,18 @@ public class ItemController : MonoBehaviour
             resetItems();
         }
     }
+    public void onPressHomeBtn(){
+        
+        for (int i = 0; i < gridLayout.transform.childCount; i++)
+        {
+            gridLayout.transform.GetChild(i).GetComponent<ItemPrefab>().changeAnimatorState(ItemState.IDLE);
+        }
+        resetItems();
+        SceneManager.instance.activeGameplay(false);
+    }
+    public void onPressSoundBtn(){
+        GameManager.instance.onMuteSound(soundTxt);
+    }
     /// <summary>
     /// Reset game variables and reArrange items postion
     /// </summary>
@@ -122,7 +154,8 @@ public class ItemController : MonoBehaviour
         flip_back_count = 0;
         open_count = 0;
         GameManager.instance.status = GameStatus.Start;
-        //setItemData();
-        SoundManager.PlayMusic();
+        GameManager.instance.setGuideTxt();
+        tryAgainBtn.SetActive(false);
+        GameManager.instance.soundManager.PlayMusic();
     }
 }

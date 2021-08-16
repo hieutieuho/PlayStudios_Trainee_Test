@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Lean.Localization;
 public enum GameStatus
 {
     Start,
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour
     [Header("Sound Manager")]
     public List<ListAudioClip> listAudioClips;
     public AudioSource sound { get; private set; }
+    public SoundManager soundManager;
     [HideInInspector]
     public GameStatus status = GameStatus.Start;
     public List<float> listProbability {get; private set;}
@@ -50,7 +52,8 @@ public class GameManager : MonoBehaviour
     {
         setGuideTxt();
         sound = FindObjectOfType<AudioSource>();
-        SoundManager.PlayMusic();
+        soundManager = sound.GetComponent<SoundManager>();
+        soundManager.PlayMusic();
         getListItem();
     }
     public void getListItem()
@@ -66,17 +69,18 @@ public class GameManager : MonoBehaviour
         }
         // get list probabilities
         listProbability = new List<float>();
-        listProbability = ProbabilityManager.getListProbability(ListItems);
+        listProbability = ProbabilityManager.instance.getListProbability(ListItems);
     }
     public void setGuideTxt()
     {
         if (status == GameStatus.Start)
-        {
-            guideTxt.text = $"Pick {ChooseCount} slot to test your luck !!!";
+        {   string txt = LeanLocalization.GetTranslationText("guide");
+            txt = txt.Replace("[]",ChooseCount.ToString());
+            guideTxt.text = txt;
         }
         else
         {
-            guideTxt.text = $"Good luck next time, Try Again ======>>>";
+            guideTxt.text = $"{LeanLocalization.GetTranslationText("Try again guide")}";
         }
     }
 
@@ -100,8 +104,30 @@ public class GameManager : MonoBehaviour
         }
         return list;
     }
+    public void onMuteSound(Text soundTxt){
+        if(GameManager.instance.sound.mute == false){
+            sound.mute = true;
+        }else{
+            sound.mute = false;
+        }
+        soundTxt.text = getSoundTxt();
+    }
+    public string getSoundTxt(){
+        if(GameManager.instance.sound.mute == false){
+            return $"{LeanLocalization.GetTranslationText("Sound")}: {LeanLocalization.GetTranslationText("On")}";
+        }else{
+            return $"{LeanLocalization.GetTranslationText("Sound")}: {LeanLocalization.GetTranslationText("Off")}";
+        }
+    }
     public void setActivePopup(bool set)
     {
         Popup.SetActive(set);
+    }
+    public void QuitGame(){
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif        
     }
 }

@@ -10,32 +10,37 @@ public enum Sound
     items,
     endGame
 }
-public static class SoundManager
+public class SoundManager :  MonoBehaviour
 {
-    static AudioClip GetAudioClip(Sound s, int weight = 0){
-        if(s != Sound.items)
+    AudioClip GetAudioClip(Sound s, int weight = 0)
+    {
+        if (s != Sound.items)
             return GameManager.instance.listAudioClips.Find(x => x.sound == s).audioClip;
         else
             return GameManager.instance.listAudioClips.Find(x => x.sound == s && x.itemWeight == weight).audioClip;
-    }   
-    public static void PlaySound(Sound s)
+    }
+    public void PlaySound(Sound s)
     {
         StopSound();
         GameManager.instance.sound.PlayOneShot(GetAudioClip(s));
     }
-    public static void PlaySoundItem(int weight)
+    public void PlaySoundItem(int weight)
     {
         StopSound();
         GameManager.instance.sound.PlayOneShot(GetAudioClip(Sound.items, weight));
     }
-    public static void PlayMusic(){
+    public void PlayMusic()
+    {
         StopSound();
         GameManager.instance.sound.clip = (GetAudioClip(Sound.Music));
         GameManager.instance.sound.Play();
+        GameManager.instance.sound.loop = true;
     }
-    static void StopSound(){
-        if(GameManager.instance.sound.isPlaying)
+    public void StopSound()
+    {
+        if (GameManager.instance.sound.isPlaying)
             GameManager.instance.sound.Stop();
+        GameManager.instance.sound.loop = false;
     }
 }
 [Serializable]

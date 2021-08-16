@@ -17,6 +17,8 @@ public class PopUpControl : MonoBehaviour
     Text itemWeight;
     [SerializeField]
     ParticleSystem particle;
+    [SerializeField]
+    Animator character;
     public static PopUpControl instance;
     void Awake()
     {
@@ -33,6 +35,8 @@ public class PopUpControl : MonoBehaviour
         coinImage.sprite = GameManager.instance.moneyIcon;
         increasingNumberEffect(0, m_Item.weight, 1);
         GameManager.instance.soundManager.PlaySoundItem(m_Item.weight);
+        character.Play($"Character_{m_Item.effect}");
+        
     }
     /// <summary>
     /// Increase the text number in an amount of time

@@ -10,4 +10,5 @@ public class M_Item
     public bool is_jackpot = false;
     public string message;
     public float Probability;
+    public string effect;
 }

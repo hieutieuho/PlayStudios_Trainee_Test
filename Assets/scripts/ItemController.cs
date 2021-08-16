@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using Lean.Localization;
 
 public class ItemController : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class ItemController : MonoBehaviour
     GameObject ItemPrefab, tryAgainBtn;
     [SerializeField]
     Text soundTxt;
+    [SerializeField]
+    Text guideTxt;
+    [SerializeField]
+    GameObject Popup;
     int open_count = 0;
     int flip_back_count = 0;
     public static ItemController instance;
@@ -26,6 +31,7 @@ public class ItemController : MonoBehaviour
     void Start()
     {
         loadItems();
+        setGuideTxt();
     }
     private void OnEnable()
     {
@@ -42,7 +48,19 @@ public class ItemController : MonoBehaviour
     private void OnDisable()
     {
     }
-
+    
+    public void setGuideTxt()
+    {
+        if (GameManager.instance.status == GameStatus.Start)
+        {   string txt = LeanLocalization.GetTranslationText("guide");
+            txt = txt.Replace("[]",GameManager.instance.ChooseCount.ToString());
+            guideTxt.text = txt;
+        }
+        else
+        {
+            guideTxt.text = $"{LeanLocalization.GetTranslationText("Try again guide")}";
+        }
+    }
     /// <summary>
     /// Load items data 
     /// </summary>
@@ -99,7 +117,7 @@ public class ItemController : MonoBehaviour
         {
             tryAgainBtn.SetActive(true);
             GameManager.instance.status = GameStatus.Finish;
-            GameManager.instance.setGuideTxt();
+            setGuideTxt();
         }
     }
     public void checkCountForSound()
@@ -141,7 +159,7 @@ public class ItemController : MonoBehaviour
             gridLayout.transform.GetChild(i).GetComponent<ItemPrefab>().changeAnimatorState(ItemState.IDLE);
         }
         resetItems();
-        SceneManager.instance.activeGameplay(false);
+        SceneManager.instance.GotoHome();
     }
     public void onPressSoundBtn(){
         GameManager.instance.onMuteSound(soundTxt);
@@ -154,8 +172,12 @@ public class ItemController : MonoBehaviour
         flip_back_count = 0;
         open_count = 0;
         GameManager.instance.status = GameStatus.Start;
-        GameManager.instance.setGuideTxt();
+        setGuideTxt();
         tryAgainBtn.SetActive(false);
         GameManager.instance.soundManager.PlayMusic();
+    }    
+    public void setActivePopup(bool set)
+    {
+        Popup.SetActive(set);
     }
 }

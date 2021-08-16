@@ -35,7 +35,6 @@ public class Setting : MonoBehaviour
     void setText()
     {
         soundTxt.text = GameManager.instance.getSoundTxt();
-        GameManager.instance.setGuideTxt();
         if (leanLocalization.CurrentLanguage == "EN")
         {
             languageTxt.text = $"{LeanLocalization.GetTranslationText("Language")}: {leanLocalization.CurrentLanguage}";

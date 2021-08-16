@@ -6,7 +6,8 @@
             "weight": 100,
             "is_jackpot": false,
             "message": "You picked the apple bud !!!",
-            "Probability": 50
+            "Probability": 50,
+            "effect" : "up"
         },
         {
             "id": "apple_flower",
@@ -14,7 +15,8 @@
             "weight": 200,
             "is_jackpot": true,
             "message": "You picked the apple flower !!!",
-            "Probability": 5
+            "Probability": 5,
+            "effect" : "down"
         },
         {
             "id": "apple_seed",
@@ -22,7 +24,8 @@
             "weight": 0,
             "is_jackpot": false,
             "message": "You picked the apple seed !!!",
-            "Probability": 22.5
+            "Probability": 22.5,
+            "effect" : "left"
         },
         {
             "id": "apple_sprout",
@@ -30,7 +33,8 @@
             "weight": 10,
             "is_jackpot": false,
             "message": "You picked the apple sprout !!!",
-            "Probability": 22.5
+            "Probability": 22.5,
+            "effect" : "right"
         }
     ]
 }

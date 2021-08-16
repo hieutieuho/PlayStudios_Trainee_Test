@@ -28,13 +28,6 @@ public class GameManager : MonoBehaviour
     public Sprite moneyIcon;
 
     [Space(10)]
-    [Header("Reference components")]
-    [SerializeField]
-    GameObject Popup;
-    [SerializeField]
-    Text guideTxt;
-
-    [Space(10)]
     [Header("Sound Manager")]
     public List<ListAudioClip> listAudioClips;
     public AudioSource sound { get; private set; }
@@ -47,10 +40,10 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        DontDestroyOnLoad(this);
     }
     void Start()
     {
-        setGuideTxt();
         sound = FindObjectOfType<AudioSource>();
         soundManager = sound.GetComponent<SoundManager>();
         soundManager.PlayMusic();
@@ -70,18 +63,6 @@ public class GameManager : MonoBehaviour
         // get list probabilities
         listProbability = new List<float>();
         listProbability = ProbabilityManager.instance.getListProbability(ListItems);
-    }
-    public void setGuideTxt()
-    {
-        if (status == GameStatus.Start)
-        {   string txt = LeanLocalization.GetTranslationText("guide");
-            txt = txt.Replace("[]",ChooseCount.ToString());
-            guideTxt.text = txt;
-        }
-        else
-        {
-            guideTxt.text = $"{LeanLocalization.GetTranslationText("Try again guide")}";
-        }
     }
 
     List<M_Item> getListItemFromImages()
@@ -105,7 +86,7 @@ public class GameManager : MonoBehaviour
         return list;
     }
     public void onMuteSound(Text soundTxt){
-        if(GameManager.instance.sound.mute == false){
+        if(sound.mute == false){
             sound.mute = true;
         }else{
             sound.mute = false;
@@ -118,10 +99,6 @@ public class GameManager : MonoBehaviour
         }else{
             return $"{LeanLocalization.GetTranslationText("Sound")}: {LeanLocalization.GetTranslationText("Off")}";
         }
-    }
-    public void setActivePopup(bool set)
-    {
-        Popup.SetActive(set);
     }
     public void QuitGame(){
         #if UNITY_EDITOR

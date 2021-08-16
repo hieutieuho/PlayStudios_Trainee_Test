@@ -66,7 +66,7 @@ public class ItemPrefab : MonoBehaviour
     /// Trigger when the animation flip_items finish
     /// </summary>
     public void onEndOpenItemAnimation(){
-        GameManager.instance.setActivePopup(true);
+        ItemController.instance.setActivePopup(true);
         PopUpControl.instance.setPopUpData(m_Item);
     }
     /// <summary>
